@@ -11,6 +11,7 @@ gem 'bootstrap-will_paginate', '0.0.9'
 gem 'unicorn'
 gem 'pusher'
 gem 'therubyracer'
+gem 'foreman'
 
 group :development , :test  do
   gem 'rspec-rails', '2.13.1'
