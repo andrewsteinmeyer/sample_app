@@ -26,7 +26,7 @@ set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public
 
 # what specs should be run before deployment is allowed to
 # continue, see lib/capistrano/tasks/run_tests.cap
-set :tests, ["spec"]
+set :tests, []
 
 # which config files should be copied by deploy:setup_config
 # see documentation in lib/capistrano/tasks/setup_config.cap
@@ -83,9 +83,25 @@ namespace :deploy do
   # make sure we're deploying what we think we're deploying
   before :deploy, "deploy:check_revision"
   # only allow a deploy with passing tests to deployed
-  # before :deploy, "deploy:run_tests"
+  before :deploy, "deploy:run_tests"
   # compile assets locally then rsync
-  # after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
+  after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
   after :finishing, 'deploy:cleanup'
+
+	# remove default nginx configuration as it will tend to conflict
+	# with our configs
+	before 'deploy:setup_config', 'nginx:remove_default_host'
+
+	# reload nginx so it will pick up any modified vhosts 
+	# from setup_config
+	after 'deploy:setup_config', 'nginx:reload'
+
+	# restart monit so it will pick up any monit configurations
+	# that we've added
+	after 'deploy:setup_config', 'monit:restart'
+
+	# As of Capistrano 3.1, the `deploy:restart` task is not called
+	# automatically
+	after 'deploy:publishing', 'deploy:restart'
 end
 
