@@ -6,7 +6,7 @@ set :scm, :git
 set :repo_url, 'git@github.com:andrewsteinmeyer/sample_app.git'
 
 set :deploy_via, :fast_remote_cache
-set :copy_exclude, %w(test .git doc config/database.yml)
+set :copy_exclude, %w(test .git doc config/database.yml config/application.yml)
 set :use_sudo, false
 
 # setup rvm.
@@ -37,8 +37,8 @@ set(:config_files, %w(
   database.example.yml
   log_rotation
   monit
-  ssl_cert.crt 
-  ssl_private_key.key 
+  server.crt
+  server.key
   unicorn.rb
   unicorn_init.sh
 ))
@@ -90,7 +90,7 @@ namespace :deploy do
 
 	# remove default nginx configuration as it will tend to conflict
 	# with our configs
-	before 'deploy:setup_config', 'nginx:remove_default_host'
+	before 'deploy:setup_config', 'nginx:remove_default_vhost'
 
 	# reload nginx so it will pick up any modified vhosts 
 	# from setup_config

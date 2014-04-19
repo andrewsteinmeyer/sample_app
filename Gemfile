@@ -12,6 +12,7 @@ gem 'unicorn'
 gem 'pusher'
 gem 'therubyracer'
 gem 'foreman'
+gem 'figaro'
 
 gem 'capistrano', '~> 3.0.1'
 gem 'capistrano-rails', '~> 1.1.0'
