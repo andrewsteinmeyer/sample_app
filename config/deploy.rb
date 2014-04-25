@@ -1,13 +1,9 @@
-set :application, 'sample_app'
+set :application, 'learn-rails'
 set :deploy_user, 'deploy'
 
 # setup repo details
 set :scm, :git
-set :repo_url, 'git@github.com:andrewsteinmeyer/sample_app.git'
-
-set :deploy_via, :fast_remote_cache
-set :copy_exclude, %w(test .git doc config/database.yml config/application.yml)
-set :use_sudo, false
+set :repo_url, 'git@github.com:andrewsteinmeyer/learn-rails.git'
 
 # setup rvm.
 set :rbenv_type, :system
